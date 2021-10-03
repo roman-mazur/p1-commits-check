@@ -10,6 +10,13 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
+// Traverse goes over the commits in the specified repo starting from the input commit.
+// The function returns
+// - a list of author emails;
+// - whether task 3 was completed
+//   (if there is a sequence of non-merge commits built by all authors with non-chronological commits);
+// - a list of author emails from the merge commits;
+// - whether at least one revert commit exists.
 func Traverse(repo *git.Repository, commit *object.Commit, teamSize int) (authors []string, sequenceGood bool, mergeAuthors []string, hasReverts bool) {
 	var (
 		am = make(authorsSet, 4)
@@ -90,6 +97,8 @@ func (cs *commitsSequence) handle(co *object.Commit, teamSize int) bool {
 
 var revertPtrn = regexp.MustCompile("[Rr]evert.*\\s+([a-f0-9]{40})")
 
+// ParseRevertRef parses the commit message and returns a hash hex of the reverted commit.
+// An empty string is returned if the commit message is not recognized as a merge commit.
 func ParseRevertRef(msg string) string {
 	if res := revertPtrn.FindAllStringSubmatch(msg, 2); len(res) > 0 {
 		return res[0][1]

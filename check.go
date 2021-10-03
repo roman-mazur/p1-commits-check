@@ -1,3 +1,6 @@
+// This command performs automated checks according to the task description of the first practice work
+// in the software architecture course.
+// See https://kpi-architecture-course.appspot.com/
 package main
 
 import (
@@ -132,6 +135,10 @@ func main() {
 	log.Println("Final points:", points - penalty)
 }
 
+// DeadlineTime parses the input string and returns a time.Time value that can be used for the task deadline checks.
+// The returned value can be used in checks like
+//         deadline := DeadlineTime("2021-10-03")
+//         if someDate.Before(deadline) { }
 func DeadlineTime(str string) time.Time {
 	dt, err := time.Parse("2006-01-02", str)
 	if err != nil {
@@ -140,6 +147,9 @@ func DeadlineTime(str string) time.Time {
 	return dt.Add(24 * time.Hour)
 }
 
+// CheckServer verifies if the if the task 2 was implemented correctly:
+//         go run server.go
+// should work and start an HTTP server on port 8795 handling GET /time HTTP requests.
 func CheckServer(dir string) error {
 	cmd := exec.Command("go", "run", "server.go")
 	cmd.Dir = dir
@@ -204,6 +214,7 @@ func CheckServer(dir string) error {
 	}
 }
 
+// CheckFmt verifies if the Go code in the repo directory has been formatted.
 func CheckFmt(dir string) bool {
 	cmd := exec.Command("go", "fmt", "server.go")
 	cmd.Dir = dir
