@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
@@ -34,12 +33,7 @@ func Traverse(repo *git.Repository, commit *object.Commit, teamSize int) (author
 	authors = am.Slice()
 	sequenceGood = cs.finished
 	mergeAuthors = ma.Slice()
-	if revRef != "" {
-		co, err := repo.CommitObject(plumbing.NewHash(revRef))
-		if err == nil && co != nil {
-			hasReverts = true
-		}
-	}
+	hasReverts = revRef != ""
 	return
 }
 
@@ -95,7 +89,7 @@ func (cs *commitsSequence) handle(co *object.Commit, teamSize int) bool {
 	return false
 }
 
-var revertPtrn = regexp.MustCompile("[Rr]evert.*\\s+([a-f0-9]{40})")
+var revertPtrn = regexp.MustCompile("[Rr]evert.*\\s+([a-f0-9]{7,40})")
 
 // ParseRevertRef parses the commit message and returns a hash hex of the reverted commit.
 // An empty string is returned if the commit message is not recognized as a merge commit.
