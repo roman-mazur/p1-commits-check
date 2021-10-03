@@ -26,8 +26,8 @@ func main() {
 		deadlineSet bool
 	)
 	flag.IntVar(&teamSize, "team-size", 3, "Expected number of the committers")
-	flag.StringVar(&commit, "commit", "", "The tip commit to use for checking")
-	flag.Func("deadline", "Task deadline", func(value string) error {
+	flag.StringVar(&commit, "commit", "", "The tip commit to use for checking (hash in hex)")
+	flag.Func("deadline", "Task deadline (e.g. 2021-10-03)", func(value string) error {
 		deadline = DeadlineTime(value)
 		deadlineSet = true
 		return nil
@@ -35,6 +35,7 @@ func main() {
 
 	flag.Parse()
 	if teamSize <= 0 {
+		flag.Usage()
 		log.Fatalf("Invalid team size: %d", teamSize)
 	}
 	repoUrl = flag.Arg(0)
@@ -45,6 +46,7 @@ func main() {
 		deadline = DeadlineTime("2021-10-03")
 	}
 	if len(commit) == 0 {
+		flag.Usage()
 		log.Fatal("Commit is not defined")
 	}
 
@@ -58,7 +60,6 @@ func main() {
 		}
 	}()
 
-	fmt.Println(deadline) // TODO: Remove.
 	log.Printf("Cloning %s", repoUrl)
 	repo, err := git.PlainClone(dir, false, &git.CloneOptions{
 		URL:      repoUrl,
@@ -120,6 +121,15 @@ func main() {
 	}
 
 	log.Println("Total points:", points)
+
+	penalty := 0
+	d := deadline
+	for co.Committer.When.After(d) {
+		penalty++
+		d.AddDate(0, 0, 7)
+	}
+	log.Println("Penalty points:", penalty)
+	log.Println("Final points:", points - penalty)
 }
 
 func DeadlineTime(str string) time.Time {
