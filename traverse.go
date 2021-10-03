@@ -113,7 +113,7 @@ func traverse(co *object.Commit, teamSize int, am authorsSet, cs *commitsSequenc
 	am[co.Author.Email] = struct{}{}
 	merge := cs.handle(co, teamSize)
 
-	if merge {
+	if co.NumParents() > 1 {
 		ma[co.Author.Email] = struct{}{}
 	}
 
