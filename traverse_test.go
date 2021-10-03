@@ -20,8 +20,8 @@ func TestParsecRevertRef(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := ParsecRevertRef(tt.args.msg); got != tt.want {
-				t.Errorf("ParsecRevertRef() = %v, want %v", got, tt.want)
+			if got := ParseRevertRef(tt.args.msg); got != tt.want {
+				t.Errorf("ParseRevertRef() = %v, want %v", got, tt.want)
 			}
 		})
 	}

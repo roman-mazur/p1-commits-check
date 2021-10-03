@@ -90,7 +90,7 @@ func (cs *commitsSequence) handle(co *object.Commit, teamSize int) bool {
 
 var revertPtrn = regexp.MustCompile("[Rr]evert.*\\s+([a-f0-9]{40})")
 
-func ParsecRevertRef(msg string) string {
+func ParseRevertRef(msg string) string {
 	if res := revertPtrn.FindAllStringSubmatch(msg, 2); len(res) > 0 {
 		return res[0][1]
 	}
@@ -109,7 +109,7 @@ func traverse(co *object.Commit, teamSize int, am authorsSet, cs *commitsSequenc
 	}
 
 	if *revertRef == "" {
-		*revertRef = ParsecRevertRef(co.Message)
+		*revertRef = ParseRevertRef(co.Message)
 	}
 
 	for i := 0; i < co.NumParents(); i++ {
