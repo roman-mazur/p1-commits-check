@@ -129,7 +129,7 @@ func main() {
 	d := deadline
 	for co.Committer.When.After(d) {
 		penalty++
-		d.AddDate(0, 0, 7)
+		d = d.AddDate(0, 0, 7)
 	}
 	log.Println("Penalty points:", penalty)
 	log.Println("Final points:", points - penalty)
