@@ -15,7 +15,6 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -87,13 +86,13 @@ func main() {
 			log.Printf("NOTE => Too many authors: %s", authors)
 		}
 		log.Println("TASK 1: OK")
-		points++
+		points += 2
 	}
 	if err := CheckServer(dir); err != nil {
 		log.Printf("TASK 2: PROBLEM => Server check failed: %s", err)
 	} else {
 		log.Println("TASK 2: OK")
-		points++
+		points += 2
 	}
 	if !sequenceGood {
 		log.Printf("TASK 3: PROBLEM => No sequence of non-merge commits by all team members (non-chronological) was found")
@@ -132,7 +131,7 @@ func main() {
 		d = d.AddDate(0, 0, 7)
 	}
 	log.Println("Penalty points:", penalty)
-	log.Println("Final points:", points - penalty)
+	log.Println("Final points:", points-penalty)
 }
 
 // DeadlineTime parses the input string and returns a time.Time value that can be used for the task deadline checks.
