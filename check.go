@@ -31,7 +31,7 @@ func main() {
 	flag.StringVar(&commit, "commit", "", "The tip commit to use for checking (hash in hex)")
 	flag.Func("deadline", "Task deadline (e.g. 2021-10-03)", func(value string) error {
 		deadline = DeadlineTime(value)
-		deadlineSet = true
+		deadlineSet = false
 		return nil
 	})
 
