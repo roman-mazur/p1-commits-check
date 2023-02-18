@@ -30,7 +30,7 @@ func main() {
 	)
 	flag.IntVar(&teamSize, "team-size", 3, "Expected number of the committers")
 	flag.StringVar(&commit, "commit", "", "The tip commit to use for checking (hash in hex)")
-	flag.Func("deadline", "Task deadline (e.g. 2021-10-03)", func(value string) error {
+	flag.Func("deadline", "Task deadline (e.g. 2023-03-01)", func(value string) error {
 		deadline = DeadlineTime(value)
 		deadlineSet = true
 		return nil
@@ -117,9 +117,9 @@ func main() {
 		points++
 	}
 	if !CheckFmt(dir) {
-		log.Printf("FMT BONUS: PROBLEM")
+		log.Printf("TASK FMT: PROBLEM")
 	} else {
-		log.Println("FMT BONUS: OK")
+		log.Println("TASK FMT: OK")
 		points++
 	}
 
@@ -137,8 +137,9 @@ func main() {
 
 // DeadlineTime parses the input string and returns a time.Time value that can be used for the task deadline checks.
 // The returned value can be used in checks like
-//         deadline := DeadlineTime("2021-10-03")
-//         if someDate.Before(deadline) { }
+//
+//	deadline := DeadlineTime("2021-10-03")
+//	if someDate.Before(deadline) { }
 func DeadlineTime(str string) time.Time {
 	dt, err := time.Parse("2006-01-02", str)
 	if err != nil {
@@ -148,10 +149,12 @@ func DeadlineTime(str string) time.Time {
 }
 
 // CheckServer verifies if the if the task 2 was implemented correctly:
-//         go run server.go
+//
+//	go run .
+//
 // should work and start an HTTP server on port 8795 handling GET /time HTTP requests.
 func CheckServer(dir string) error {
-	cmd := exec.Command("go", "run", "server.go")
+	cmd := exec.Command("go", "run", ".")
 	cmd.Dir = dir
 	if err := cmd.Start(); err != nil {
 		return err
@@ -216,7 +219,7 @@ func CheckServer(dir string) error {
 
 // CheckFmt verifies if the Go code in the repo directory has been formatted.
 func CheckFmt(dir string) bool {
-	cmd := exec.Command("go", "fmt", "server.go")
+	cmd := exec.Command("go", "fmt", ".")
 	cmd.Dir = dir
 	out, err := cmd.CombinedOutput()
 	res := err == nil && len(out) == 0
