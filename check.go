@@ -87,13 +87,13 @@ func main() {
 			log.Printf("NOTE => Too many authors: %s", authors)
 		}
 		log.Println("TASK 1: OK")
-		points += 2
+		points++
 	}
 	if err := CheckServer(dir); err != nil {
 		log.Printf("TASK 2: PROBLEM => Server check failed: %s", err)
 	} else {
 		log.Println("TASK 2: OK")
-		points += 2
+		points++
 	}
 	if !sequenceGood {
 		log.Printf("TASK 3: PROBLEM => No sequence of non-merge commits by all team members (non-chronological) was found")
