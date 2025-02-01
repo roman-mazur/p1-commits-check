@@ -30,7 +30,7 @@ func main() {
 	)
 	flag.IntVar(&teamSize, "team-size", 3, "Expected number of the committers")
 	flag.StringVar(&commit, "commit", "", "The tip commit to use for checking (hash in hex)")
-	flag.Func("deadline", "Task deadline (e.g. 2023-03-01)", func(value string) error {
+	flag.Func("deadline", "Task deadline (e.g. 2025-02-26)", func(value string) error {
 		deadline = DeadlineTime(value)
 		deadlineSet = true
 		return nil
@@ -46,7 +46,7 @@ func main() {
 		repoUrl = "https://github.com/roman-mazur/oak"
 	}
 	if !deadlineSet {
-		deadline = DeadlineTime("2021-10-03")
+		deadline = DeadlineTime("2025-02-26")
 	}
 	if len(commit) == 0 {
 		flag.Usage()
